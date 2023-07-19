@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="CircularityService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Circularity" EntityType="CircularityService.Circularity">
+                    <NavigationPropertyBinding Path="SiblingEntity" Target="Circularity"/>
+                </EntitySet>
+                <EntitySet Name="Component" EntityType="CircularityService.Component">
+                    <NavigationPropertyBinding Path="SiblingEntity" Target="Component"/>
+                </EntitySet>
+                <EntitySet Name="ComponentComposition" EntityType="CircularityService.ComponentComposition">
+                    <NavigationPropertyBinding Path="component" Target="Component"/>
+                    <NavigationPropertyBinding Path="SiblingEntity" Target="ComponentComposition"/>
+                </EntitySet>
+            </EntityContainer>
+            <EntityType Name="Circularity">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                    <PropertyRef Name="IsActiveEntity"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="partId" Type="Edm.String" MaxLength="100"/>
+                <Property Name="partDescr" Type="Edm.String"/>
+                <Property Name="components" Type="Collection(CircularityService.Circularity_components)" Nullable="false"/>
+                <Property Name="hazardous" Type="Edm.Boolean"/>
+                <Property Name="circularityIndex" Type="Edm.Int32"/>
+                <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+                <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <NavigationProperty Name="DraftAdministrativeData" Type="CircularityService.DraftAdministrativeData" ContainsTarget="true"/>
+                <NavigationProperty Name="SiblingEntity" Type="CircularityService.Circularity"/>
+            </EntityType>
+            <EntityType Name="Component">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                    <PropertyRef Name="IsActiveEntity"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="componentId" Type="Edm.String" MaxLength="100"/>
+                <Property Name="description" Type="Edm.String"/>
+                <Property Name="decayTimeline" Type="Edm.String"/>
+                <Property Name="recyclable" Type="Edm.Boolean"/>
+                <Property Name="recyclability" Type="Edm.Int32"/>
+                <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+                <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <NavigationProperty Name="DraftAdministrativeData" Type="CircularityService.DraftAdministrativeData" ContainsTarget="true"/>
+                <NavigationProperty Name="SiblingEntity" Type="CircularityService.Component"/>
+            </EntityType>
+            <EntityType Name="ComponentComposition">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                    <PropertyRef Name="IsActiveEntity"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <NavigationProperty Name="component" Type="CircularityService.Component">
+                    <ReferentialConstraint Property="component_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="component_ID" Type="Edm.Guid"/>
+                <Property Name="percentage" Type="Edm.Decimal" Scale="variable"/>
+                <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+                <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <NavigationProperty Name="DraftAdministrativeData" Type="CircularityService.DraftAdministrativeData" ContainsTarget="true"/>
+                <NavigationProperty Name="SiblingEntity" Type="CircularityService.ComponentComposition"/>
+            </EntityType>
+            <EntityType Name="DraftAdministrativeData">
+                <Key>
+                    <PropertyRef Name="DraftUUID"/>
+                </Key>
+                <Property Name="DraftUUID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="CreationDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="CreatedByUser" Type="Edm.String" MaxLength="256"/>
+                <Property Name="DraftIsCreatedByMe" Type="Edm.Boolean"/>
+                <Property Name="LastChangeDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="LastChangedByUser" Type="Edm.String" MaxLength="256"/>
+                <Property Name="InProcessByUser" Type="Edm.String" MaxLength="256"/>
+                <Property Name="DraftIsProcessedByMe" Type="Edm.Boolean"/>
+            </EntityType>
+            <ComplexType Name="Circularity_components">
+                <NavigationProperty Name="component" Type="CircularityService.Component">
+                    <ReferentialConstraint Property="component_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="component_ID" Type="Edm.Guid"/>
+                <Property Name="percentage" Type="Edm.Decimal" Scale="variable"/>
+            </ComplexType>
+            <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="CircularityService.Circularity"/>
+                <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+                <ReturnType Type="CircularityService.Circularity"/>
+            </Action>
+            <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="CircularityService.Component"/>
+                <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+                <ReturnType Type="CircularityService.Component"/>
+            </Action>
+            <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="CircularityService.ComponentComposition"/>
+                <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+                <ReturnType Type="CircularityService.ComponentComposition"/>
+            </Action>
+            <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="CircularityService.Circularity"/>
+                <ReturnType Type="CircularityService.Circularity"/>
+            </Action>
+            <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="CircularityService.Component"/>
+                <ReturnType Type="CircularityService.Component"/>
+            </Action>
+            <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="CircularityService.ComponentComposition"/>
+                <ReturnType Type="CircularityService.ComponentComposition"/>
+            </Action>
+            <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="CircularityService.Circularity"/>
+                <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+                <ReturnType Type="CircularityService.Circularity"/>
+            </Action>
+            <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="CircularityService.Component"/>
+                <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+                <ReturnType Type="CircularityService.Component"/>
+            </Action>
+            <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="CircularityService.ComponentComposition"/>
+                <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+                <ReturnType Type="CircularityService.ComponentComposition"/>
+            </Action>
+            <Annotations Target="CircularityService.Circularity">
+                <Annotation Term="UI.HeaderInfo">
+                    <Record Type="UI.HeaderInfoType">
+                        <PropertyValue Property="TypeName" String="Circular Item"/>
+                        <PropertyValue Property="TypeNamePlural" String="Circular Items"/>
+                        <PropertyValue Property="Title">
+                            <Record Type="UI.DataField">
+                                <PropertyValue Property="Value" Path="partId"/>
+                            </Record>
+                        </PropertyValue>
+                        <PropertyValue Property="Description">
+                            <Record Type="UI.DataField">
+                                <PropertyValue Property="Value" Path="partDescr"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.SelectionFields">
+                    <Collection>
+                        <PropertyPath>circularityIndex</PropertyPath>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.LineItem">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="partId"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="partDescr"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="hazardous"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="circularityIndex"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.Facets">
+                    <Collection>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="Main"/>
+                            <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Main"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.FieldGroup" Qualifier="Main">
+                    <Record Type="UI.FieldGroupType">
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="partId"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="circularityIndex"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="CircularityService.EntityContainer/Circularity">
+                <Annotation Term="Common.DraftRoot">
+                    <Record Type="Common.DraftRootType">
+                        <PropertyValue Property="ActivationAction" String="CircularityService.draftActivate"/>
+                        <PropertyValue Property="EditAction" String="CircularityService.draftEdit"/>
+                        <PropertyValue Property="PreparationAction" String="CircularityService.draftPrepare"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="CircularityService.Circularity/createdAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                </Annotations>
+                <Annotations Target="CircularityService.Circularity/createdBy">
+                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                    <Annotation Term="Core.Immutable" Bool="true"/>
+                    <Annotation Term="Core.Computed" Bool="true"/>
+                    <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                        </Annotations>
+                        <Annotations Target="CircularityService.Circularity/modifiedAt">
+                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                            <Annotation Term="Core.Computed" Bool="true"/>
+                            <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                            </Annotations>
+                            <Annotations Target="CircularityService.Circularity/modifiedBy">
+                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                <Annotation Term="Core.Computed" Bool="true"/>
+                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                    <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                    </Annotations>
+                                    <Annotations Target="CircularityService.Circularity/ID">
+                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                    </Annotations>
+                                    <Annotations Target="CircularityService.Circularity/partId">
+                                        <Annotation Term="Common.Label" String="Part Id"/>
+                                    </Annotations>
+                                    <Annotations Target="CircularityService.Circularity/partDescr">
+                                        <Annotation Term="Common.Label" String="Part Description"/>
+                                    </Annotations>
+                                    <Annotations Target="CircularityService.Circularity/components">
+                                        <Annotation Term="Common.Label" String="Components"/>
+                                    </Annotations>
+                                    <Annotations Target="CircularityService.Circularity/hazardous">
+                                        <Annotation Term="Common.Label" String="Hazardous"/>
+                                    </Annotations>
+                                    <Annotations Target="CircularityService.Circularity/circularityIndex">
+                                        <Annotation Term="Common.Label" String="Circularity Index"/>
+                                    </Annotations>
+                                    <Annotations Target="CircularityService.Circularity/IsActiveEntity">
+                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                    </Annotations>
+                                    <Annotations Target="CircularityService.Circularity/HasActiveEntity">
+                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                    </Annotations>
+                                    <Annotations Target="CircularityService.Circularity/HasDraftEntity">
+                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                    </Annotations>
+                                    <Annotations Target="CircularityService.Circularity/DraftAdministrativeData">
+                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                    </Annotations>
+                                    <Annotations Target="CircularityService.EntityContainer/Component">
+                                        <Annotation Term="Common.DraftRoot">
+                                            <Record Type="Common.DraftRootType">
+                                                <PropertyValue Property="ActivationAction" String="CircularityService.draftActivate"/>
+                                                <PropertyValue Property="EditAction" String="CircularityService.draftEdit"/>
+                                                <PropertyValue Property="PreparationAction" String="CircularityService.draftPrepare"/>
+                                            </Record>
+                                        </Annotation>
+                                    </Annotations>
+                                    <Annotations Target="CircularityService.Component/createdAt">
+                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                        <Annotation Term="Core.Immutable" Bool="true"/>
+                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                        </Annotations>
+                                        <Annotations Target="CircularityService.Component/createdBy">
+                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                            <Annotation Term="Core.Immutable" Bool="true"/>
+                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                            <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                </Annotations>
+                                                <Annotations Target="CircularityService.Component/modifiedAt">
+                                                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                    <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                    </Annotations>
+                                                    <Annotations Target="CircularityService.Component/modifiedBy">
+                                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                            <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                            </Annotations>
+                                                            <Annotations Target="CircularityService.Component/ID">
+                                                                <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                <Annotation Term="Common.Text" Path="description"/>
+                                                                <Annotation Term="Core.Computed" Bool="true"/>
+                                                            </Annotations>
+                                                            <Annotations Target="CircularityService.Component/componentId">
+                                                                <Annotation Term="Common.Label" String="Component Id"/>
+                                                            </Annotations>
+                                                            <Annotations Target="CircularityService.Component/description">
+                                                                <Annotation Term="Common.Label" String="Component Description"/>
+                                                            </Annotations>
+                                                            <Annotations Target="CircularityService.Component/decayTimeline">
+                                                                <Annotation Term="Common.Label" String="Decay Time(in years)"/>
+                                                            </Annotations>
+                                                            <Annotations Target="CircularityService.Component/recyclable">
+                                                                <Annotation Term="Common.Label" String="Recyclable"/>
+                                                            </Annotations>
+                                                            <Annotations Target="CircularityService.Component/recyclability">
+                                                                <Annotation Term="Common.Label" String="Percentage Recyclable"/>
+                                                            </Annotations>
+                                                            <Annotations Target="CircularityService.Component/IsActiveEntity">
+                                                                <Annotation Term="UI.Hidden" Bool="true"/>
+                                                            </Annotations>
+                                                            <Annotations Target="CircularityService.Component/HasActiveEntity">
+                                                                <Annotation Term="UI.Hidden" Bool="true"/>
+                                                            </Annotations>
+                                                            <Annotations Target="CircularityService.Component/HasDraftEntity">
+                                                                <Annotation Term="UI.Hidden" Bool="true"/>
+                                                            </Annotations>
+                                                            <Annotations Target="CircularityService.Component/DraftAdministrativeData">
+                                                                <Annotation Term="UI.Hidden" Bool="true"/>
+                                                            </Annotations>
+                                                            <Annotations Target="CircularityService.EntityContainer/ComponentComposition">
+                                                                <Annotation Term="Common.DraftRoot">
+                                                                    <Record Type="Common.DraftRootType">
+                                                                        <PropertyValue Property="ActivationAction" String="CircularityService.draftActivate"/>
+                                                                        <PropertyValue Property="EditAction" String="CircularityService.draftEdit"/>
+                                                                        <PropertyValue Property="PreparationAction" String="CircularityService.draftPrepare"/>
+                                                                    </Record>
+                                                                </Annotation>
+                                                            </Annotations>
+                                                            <Annotations Target="CircularityService.ComponentComposition/createdAt">
+                                                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                <Annotation Term="Core.Computed" Bool="true"/>
+                                                                <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                                                </Annotations>
+                                                                <Annotations Target="CircularityService.ComponentComposition/createdBy">
+                                                                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                    <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                                    <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                                        </Annotations>
+                                                                        <Annotations Target="CircularityService.ComponentComposition/modifiedAt">
+                                                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                                                            <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                                            </Annotations>
+                                                                            <Annotations Target="CircularityService.ComponentComposition/modifiedBy">
+                                                                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                    <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                                                    </Annotations>
+                                                                                    <Annotations Target="CircularityService.ComponentComposition/ID">
+                                                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                    </Annotations>
+                                                                                    <Annotations Target="CircularityService.ComponentComposition/IsActiveEntity">
+                                                                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                    </Annotations>
+                                                                                    <Annotations Target="CircularityService.ComponentComposition/HasActiveEntity">
+                                                                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                    </Annotations>
+                                                                                    <Annotations Target="CircularityService.ComponentComposition/HasDraftEntity">
+                                                                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                    </Annotations>
+                                                                                    <Annotations Target="CircularityService.ComponentComposition/DraftAdministrativeData">
+                                                                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                    </Annotations>
+                                                                                    <Annotations Target="CircularityService.DraftAdministrativeData">
+                                                                                        <Annotation Term="Common.Label" String="{i18n>Draft_DraftAdministrativeData}"/>
+                                                                                        </Annotations>
+                                                                                        <Annotations Target="CircularityService.DraftAdministrativeData/DraftUUID">
+                                                                                            <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                            <Annotation Term="Common.Label" String="{i18n>Draft_DraftUUID}"/>
+                                                                                            </Annotations>
+                                                                                            <Annotations Target="CircularityService.DraftAdministrativeData/CreationDateTime">
+                                                                                                <Annotation Term="Common.Label" String="{i18n>Draft_CreationDateTime}"/>
+                                                                                                </Annotations>
+                                                                                                <Annotations Target="CircularityService.DraftAdministrativeData/CreatedByUser">
+                                                                                                    <Annotation Term="Common.Label" String="{i18n>Draft_CreatedByUser}"/>
+                                                                                                    </Annotations>
+                                                                                                    <Annotations Target="CircularityService.DraftAdministrativeData/DraftIsCreatedByMe">
+                                                                                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                        <Annotation Term="Common.Label" String="{i18n>Draft_DraftIsCreatedByMe}"/>
+                                                                                                        </Annotations>
+                                                                                                        <Annotations Target="CircularityService.DraftAdministrativeData/LastChangeDateTime">
+                                                                                                            <Annotation Term="Common.Label" String="{i18n>Draft_LastChangeDateTime}"/>
+                                                                                                            </Annotations>
+                                                                                                            <Annotations Target="CircularityService.DraftAdministrativeData/LastChangedByUser">
+                                                                                                                <Annotation Term="Common.Label" String="{i18n>Draft_LastChangedByUser}"/>
+                                                                                                                </Annotations>
+                                                                                                                <Annotations Target="CircularityService.DraftAdministrativeData/InProcessByUser">
+                                                                                                                    <Annotation Term="Common.Label" String="{i18n>Draft_InProcessByUser}"/>
+                                                                                                                    </Annotations>
+                                                                                                                    <Annotations Target="CircularityService.DraftAdministrativeData/DraftIsProcessedByMe">
+                                                                                                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                                        <Annotation Term="Common.Label" String="{i18n>Draft_DraftIsProcessedByMe}"/>
+                                                                                                                        </Annotations>
+                                                                                                                        <Annotations Target="CircularityService.Circularity_components">
+                                                                                                                            <Annotation Term="Common.Label" String="Components"/>
+                                                                                                                        </Annotations>
+                                                                                                                    </Schema>
+                                                                                                                </edmx:DataServices>
+                                                                                                            </edmx:Edmx>

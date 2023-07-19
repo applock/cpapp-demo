@@ -1,0 +1,1 @@
+using CircularityService as service from '../../srv/circularity-service';
