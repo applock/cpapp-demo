@@ -1,0 +1,4 @@
+ID;createdAt;createdBy;partId;partDescr;components;hazardous;circularityIndex
+20466922-7d57-4e76-b14c-e53fd97dcb01;2021-04-27;max.mustermann@muster.com;ACCE_MIRR_L;Left Side Rear View Mirror;[{"component": "20466922-7d57-4e76-b14c-e53fd97dcb32", "percentage": 40},{"component": "20466922-7d57-4e76-b14c-e53fd97dcb34", "percentage": 45}];false;15
+20466922-7d57-4e76-b14c-e53fd97dcb02;2021-04-27;max.mustermann@muster.com;ACCE_MIRR_R;Right Side Rear View Mirror;[{"component": "20466922-7d57-4e76-b14c-e53fd97dcb32", "percentage": 40},{"component": "20466922-7d57-4e76-b14c-e53fd97dcb34", "percentage": 45}];false;15
+20466922-7d57-4e76-b14c-e53fd97dcb03;2021-04-27;max.mustermann@muster.com;ENGBAY_SKID_PT;Front Skid Plate;[{"component": "20466922-7d57-4e76-b14c-e53fd97dcb31", "percentage": 60},{"component": "20466922-7d57-4e76-b14c-e53fd97dcb34", "percentage": 25},{"component": "20466922-7d57-4e76-b14c-e53fd97dcb35", "percentage": 5}];false;80

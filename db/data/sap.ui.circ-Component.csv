@@ -1,0 +1,6 @@
+ID;createdAt;createdBy;componentId;description;decayTimeline;recyclable;recyclability
+20466922-7d57-4e76-b14c-e53fd97dcb31;2021-04-27;max.mustermann@muster.com;THERMO_PLASTIC;Heat Sensitive Thermo Plastic;1000;true;90
+20466922-7d57-4e76-b14c-e53fd97dcb32;2021-04-27;max.mustermann@muster.com;CLEAR_GLASS;Pure glass;500;true;85
+20466922-7d57-4e76-b14c-e53fd97dcb33;2021-04-27;max.mustermann@muster.com;PAPER;White Paper;1;true;25
+20466922-7d57-4e76-b14c-e53fd97dcb34;2021-04-27;max.mustermann@muster.com;STEEL;Steel;100;true;85
+20466922-7d57-4e76-b14c-e53fd97dcb35;2021-04-27;max.mustermann@muster.com;PLASTIC_PAINT;Plastic Paint Coat;100;false;0
